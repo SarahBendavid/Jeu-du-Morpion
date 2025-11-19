@@ -1,4 +1,4 @@
-name: Deploy React App
+name: Deploy Vite App
 
 on:
   push:
@@ -10,34 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le code
       - name: Checkout
         uses: actions/checkout@v3
 
-      # 2️⃣ Installer Node
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3️⃣ Installer les dépendances
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Builder le projet
       - name: Build
         run: npm run build
 
-      # 5️⃣ Configurer Git (important pour éviter les erreurs 128)
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # 6️⃣ Déploiement sur gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./dist
           publish_branch: gh-pages
